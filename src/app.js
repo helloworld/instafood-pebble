@@ -1,20 +1,20 @@
 var UI = require('ui');
 var ajax = require('ajax');
-// var Settings = require('settings');
+var Settings = require('settings');
 var URL = 'http://instafood.meteor.com/getFavorites/?username=taurn';
-// var user = '';
-// var password = '';
-// var configURL = '';
+var user = '';
+var password = '';
+var configURL = '';
 
-// Settings.config({
-//     url:configURL
-//   },
-//   function (e){
+Settings.config({
+    url:configURL
+  },
+  function (e){
   
-//   },
-//   function (e){
+  },
+  function (e){
   
-// });
+});
 
 var initCard = new UI.Card({
   title:'Instafood',
