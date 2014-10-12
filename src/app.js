@@ -1,19 +1,21 @@
 var UI = require('ui');
 var ajax = require('ajax');
-//var Settings = require('settings');
-// var user = 'Rachel';
-// var password = '';
-// var configURL = '';
+var Settings = require('settings');
+var configURL = 'instafood.meteor.com/pebble';
+var user = '';
 
-// Settings.config(
-//   {
-//     url:configURL
-//   },
-//   function (e){},
-//   function (e){
-    
-// });
-
+Settings.config(
+  {
+    url:configURL
+  },
+  function (e){},
+  function (e){
+    var options = e.options;
+    var tempuser = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
+    Settings.data('info', tempuser);
+  }
+);
+user = Settings.data('info');
 var initCard = new UI.Card({
   title:'Instafood',
   body:'Login successful.'
@@ -35,11 +37,13 @@ initCard.on('click', 'select', function (e){
   },
   function (data){
     var favFoods = [];
+    var tray = [];
     for (var keys in data.favorites){
       favFoods.push({
         title: keys,
         subtitle: data.favorites[keys].store +' $'+ data.favorites[keys].price
       }); 
+      tray.push(data.favorites[keys].tray);
     }
     var resultsMenu = new UI.Menu({
       sections: [{
@@ -59,14 +63,14 @@ initCard.on('click', 'select', function (e){
         confirm.show();
         confirm.on('click', function (a){
           ajax({
-            url:'http://instafood.meteor.com/sendOrder/?username=Sashank&tray=' + '',
+            url:'http://instafood.meteor.com/sendOrder/?username=Sashank&tray=' + tray[e.itemIndex],
             type: 'json',
             method: 'post'
           },
-          function (data){
+          function (s){
             var complete = new UI.Card({
               title:'Order Placed',
-              subtitle:'ETA: 30 mins',
+              subtitle:'ETA: ',
               body: stuff
             });
             complete.show();
@@ -79,7 +83,7 @@ initCard.on('click', 'select', function (e){
     function (error){
       var errorCard = new UI.card({
         title:'Error',
-        body:'Oops... loooks like somebody messed up.'
+        body:'Oops... looks like somebody messed up.'
       });
       errorCard.show();
     }
