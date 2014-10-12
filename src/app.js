@@ -6,14 +6,13 @@ var user = '';
 var password = '';
 var configURL = '';
 
-Settings.config({
+Settings.config(
+  {
     url:configURL
   },
+  function (e){},
   function (e){
-  
-  },
-  function (e){
-  
+    
 });
 
 var initCard = new UI.Card({
@@ -62,7 +61,8 @@ initCard.on('click', 'select', function (e){
         confirm.on('click', function (a){
           var complete = new UI.Card({
             title:'Order Placed',
-            body:'ETA: 30 mins'
+            subtitle:'ETA: 30 mins',
+            body: stuff
           });
           complete.show();
           confirm.hide();
