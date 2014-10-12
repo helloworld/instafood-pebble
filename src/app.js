@@ -1,23 +1,22 @@
 var UI = require('ui');
 var ajax = require('ajax');
-var Settings = require('settings');
-var URL = 'http://instafood.meteor.com/getFavorites/?username=taurn';
-var user = '';
-var password = '';
-var configURL = '';
+//var Settings = require('settings');
+// var user = 'Rachel';
+// var password = '';
+// var configURL = '';
 
-Settings.config(
-  {
-    url:configURL
-  },
-  function (e){},
-  function (e){
+// Settings.config(
+//   {
+//     url:configURL
+//   },
+//   function (e){},
+//   function (e){
     
-});
+// });
 
 var initCard = new UI.Card({
   title:'Instafood',
-  body:'Please login in continue...'
+  body:'Login successful.'
 });
 initCard.show();
 initCard.on('click', 'select', function (e){
@@ -30,18 +29,18 @@ initCard.on('click', 'select', function (e){
   
   ajax(
   {
-    url: URL,
-    type: 'json'
+    url: 'http://instafood.meteor.com/getFavorites/?username=Sashank',
+    type: 'json',
+    method:'get'
   },
   function (data){
-    var tempFoods = data.favorites;
     var favFoods = [];
-    tempFoods.forEach(function(a){
+    for (var keys in data.favorites){
       favFoods.push({
-        title:a,
-        subtitle:'Restaurant X'
-      });
-    });
+        title: keys,
+        subtitle: data.favorites[keys].store +' $'+ data.favorites[keys].price
+      }); 
+    }
     var resultsMenu = new UI.Menu({
       sections: [{
         title: 'Favorite Foods',
@@ -51,21 +50,29 @@ initCard.on('click', 'select', function (e){
     resultsMenu.show();
     splashCard.hide();
     resultsMenu.on('select', function (e){
-        var stuff = e.item.title +' @ '+ e.item.subtitle;
+        var stuff = e.item.title +' @ '+ e.item.subtitle.split('$')[0];
         var confirm = new UI.Card({
           title:'Confirm Purchase',
-          subtitle:'Total Cost: $6.00',
+          subtitle:'Total Cost: $'+e.item.subtitle.split('$')[1],
           body:stuff
         });
         confirm.show();
         confirm.on('click', function (a){
-          var complete = new UI.Card({
-            title:'Order Placed',
-            subtitle:'ETA: 30 mins',
-            body: stuff
-          });
-          complete.show();
-          confirm.hide();
+          ajax({
+            url:'http://instafood.meteor.com/sendOrder/?username=Sashank&tray=' + '',
+            type: 'json',
+            method: 'post'
+          },
+          function (data){
+            var complete = new UI.Card({
+              title:'Order Placed',
+              subtitle:'ETA: 30 mins',
+              body: stuff
+            });
+            complete.show();
+            confirm.hide();
+          }
+          );
         });
     });
     },
