@@ -1,10 +1,10 @@
 {
     "appKeys": {},
     "capabilities": [
-        "configurable"
+        ""
     ],
-    "companyName": "Instafood",
-    "longName": "Instafood",
+    "companyName": "InstaFood",
+    "longName": "InstaFood",
     "projectType": "pebblejs",
     "resources": {
         "media": [
@@ -31,7 +31,7 @@
             }
         ]
     },
-    "shortName": "Instafood",
+    "shortName": "InstaFood",
     "uuid": "7d41acb3-3608-4bbc-8cbb-3fd073776b23",
     "versionCode": 1,
     "versionLabel": "1.0",

@@ -1,29 +1,29 @@
 var UI = require('ui');
 var ajax = require('ajax');
-var Settings = require('settings');
-var configURL = 'instafood.meteor.com/pebble';
-var user = '';
+// var Settings = require('settings');
+// var configURL = 'insta-food.me/pebble';
+// var user = '';
 
-Settings.config(
-  {
-    url:configURL
-  },
-  function (e){},
-  function (e){
-    var options = e.options;
-    var tempuser = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
-    Settings.data('info', tempuser);
-  }
-);
-user = Settings.data('info');
+// Settings.config(
+//   {
+//     url:configURL
+//   },
+//   function (e){},
+//   function (e){
+//     var options = e.options;
+//     var tempuser = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
+//     Settings.data('info', tempuser);
+//   }
+// );
+// user = Settings.data('info');
 var initCard = new UI.Card({
-  title:'Instafood',
+  title:'InstaFood',
   body:'Login successful.'
 });
 initCard.show();
 initCard.on('click', 'select', function (e){
   var splashCard = new UI.Card({
-    title:'Instafood',
+    title:'InstaFood',
     subtitle:'Fetching your favorites...'
   });
   splashCard.show();
@@ -31,7 +31,7 @@ initCard.on('click', 'select', function (e){
   
   ajax(
   {
-    url: 'http://instafood.meteor.com/getFavorites/?username=Sashank',
+    url: 'http://insta-food.me/getFavorites/?username=Sashank',
     type: 'json',
     method:'get'
   },
@@ -63,18 +63,20 @@ initCard.on('click', 'select', function (e){
         confirm.show();
         confirm.on('click', function (a){
           ajax({
-            url:'http://instafood.meteor.com/sendOrder/?username=Sashank&tray=' + tray[e.itemIndex],
+            url:'http://insta-food.me/sendOrder/?username=Sashank&tray=' + tray[e.itemIndex],
             type: 'json',
             method: 'post'
           },
           function (s){
-            var complete = new UI.Card({
-              title:'Order Placed',
-              subtitle:'ETA: ',
-              body: stuff
-            });
-            complete.show();
-            confirm.hide();
+            if(s.payment == 'success'){
+                var complete = new UI.Card({
+                  title:'Order Placed',
+                  subtitle:'ETA: ' + s.deliverytime + ' mins',
+                  body: stuff
+                });
+                complete.show();
+                confirm.hide(); 
+            }
           }
           );
         });
